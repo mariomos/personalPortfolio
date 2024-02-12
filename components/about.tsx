@@ -16,13 +16,13 @@ export default function About() {
     id='about'>
         <SectionHeading> About me </SectionHeading>
         <p className="mb-4 font-medium">
-        Life threw me a curveball when a football injury shifted gears. Retail paid the bills, but dreams of coding never faded. Couldn't swing university, so I went rogue, self-taught, and made coding my hustle. Solving problems and writing clean code became my thing.
-        I stumbled into coding like finding a hidden treasure. Now, I'm into JavaScript, React, Vue, and riding the Tailwind. I'm no wizard (yet), just a regular person who fell in love with turning ideas into reality.
+        Life threw me a curveball when a football injury shifted gears. Retail paid the bills, but dreams of coding never faded. Could not swing university, so I went rogue, self-taught, and made coding my hustle. Solving problems and writing clean code became my thing.
+        I stumbled into coding like finding a hidden treasure. Now, I am into JavaScript, React, Vue, and riding the Tailwind. I am no wizard (yet), just a regular person who fell in love with turning ideas into reality.
       </p>
 
       <p className='mb-3 font-medium'>
-      Beyond coding, I'm your fantasy football nerd. Yep, I enjoy building virtual teams as much as real code. Always chasing the latest tech trends - it's like trying to catch a speeding train, but I'm getting there, one code block at a time.
-        Let's chat tech, code, or why my fantasy football team is the best!
+      Beyond coding, I amm your fantasy football nerd. Yep, I enjoy building virtual teams as much as real code. Always chasing the latest tech trends - it is like trying to catch a speeding train, but I am getting there, one code block at a time.
+        Let us chat tech, code, or why my fantasy football team is the best!
       </p>
 
 
