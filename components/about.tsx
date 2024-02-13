@@ -21,7 +21,7 @@ export default function About() {
       </p>
 
       <p className='mb-3 font-medium'>
-      Beyond coding, I amm your fantasy football nerd. Yep, I enjoy building virtual teams as much as real code. Always chasing the latest tech trends - it is like trying to catch a speeding train, but I am getting there, one code block at a time.
+      Beyond coding, I am your fantasy football nerd. Yep, I enjoy building virtual teams as much as real code. Always chasing the latest tech trends - it is like trying to catch a speeding train, but I am getting there, one code block at a time.
         Let us chat tech, code, or why my fantasy football team is the best!
       </p>
 
