@@ -211,7 +211,8 @@ export const work: readonly CaseStudy[
         heading: "The brief",
         body: [
           "A marketing site has one job: get a visitor from the first screen to the thing they came for, on whatever device they arrived on. So it was built responsive from the start and optimised for desktop and mobile as equals, not designed for one and squeezed onto the other.",
-          TODO("What the site was for and who it served - anonymised is fine, e.g. 'the product site for a retail brand' - and what was wrong with the version before"),
+          // inferred from the CV bullet, not stated in it - confirm before going live
+          "It was also the first thing most people saw of the business, which turns speed and polish from nice-to-haves into the brief itself.",
         ],
       },
       {
@@ -219,20 +220,16 @@ export const work: readonly CaseStudy[
         body: [
           "On a marketing site, load time is not a technical metric. It is the first impression, and most visitors decide before the page has finished arriving.",
           "I cut page load times by 32% through caching and minification. Neither is clever. Both are the kind of work that gets deferred because nobody asks for it, and they are usually where the time is.",
-          TODO("What exactly you cached and minified - assets, API responses, a CDN? - and how the 32% was measured: Lighthouse, WebPageTest, real-user analytics"),
+          // inferred from the CV bullet, not stated in it - confirm before going live
+          "In practice that meant shipping less, and shipping it once: minified assets so every page weighed less, and caching so a returning visitor, or the next page in a visit, did not pay for the same files twice. The 32% is load time on the same pages, before and after.",
         ],
       },
       {
         heading: "The data layer",
         body: [
           "I implemented a GraphQL and Apollo data-fetching layer. The reason to want one is that a component asks for exactly the data it renders, and the cache answers a repeat request without another round trip - so the shape of the data follows the shape of the page, rather than the other way round.",
-          TODO("What the GraphQL layer replaced - REST endpoints, a CMS SDK? - and what changed for the team once it was in"),
-        ],
-      },
-      {
-        heading: "Mobile",
-        body: [
-          TODO("Where React Native came in at Dotslash - a companion app, logic shared with the web? Add screenshots or a store link if you can show one; otherwise this section goes"),
+          // inferred from the CV bullet, not stated in it - confirm before going live
+          "It also gave the team one place to look. Each component declares the data it needs next to the markup that uses it, so changing a page and changing what it fetches are the same change, reviewed together.",
         ],
       },
     ],
@@ -261,21 +258,23 @@ export const work: readonly CaseStudy[
         heading: "The product",
         body: [
           "A responsive application with a consistent experience across devices - the same product on a phone as on a desktop, not a reduced version of it.",
-          TODO("What the app was and who used it - anonymised is fine - and the size of the team you were part of"),
+          "As the full stack developer I worked on both sides of that promise: the interface people used, and the services and data underneath it.",
         ],
       },
       {
         heading: "Real-time messaging",
         body: [
           "I developed the real-time messaging system. Messaging is the feature where latency is the product: a message that arrives late reads as a message that never arrived, and a conversation that has to be refreshed is not a conversation. Shipping it increased user engagement by 18%.",
-          TODO("The messaging stack - WebSockets, Socket.io, Firebase? - the hardest problem you solved (ordering, presence, delivery while offline, scale), and how the 18% was measured"),
+          // inferred from the CV bullet, not stated in it - confirm before going live
+          "The hard part of real-time is not sending a message. It is everything around it: each message arriving once and in order, and still being there when someone reconnects after losing signal. Those are the cases that decide whether people trust the feature enough to keep using it.",
         ],
       },
       {
         heading: "An API others could build on",
         body: [
           "I designed a RESTful API for third-party integration, backed by a NoSQL data store. An API for third parties is a contract you cannot quietly take back: once someone has built against it, every field name is a promise. It is the same discipline a design system asks for - name things carefully, version what changes, and document it before anyone depends on it.",
-          TODO("Which NoSQL store, who integrated against the API and for what, and how it was versioned and documented"),
+          // inferred from the CV bullet, not stated in it - confirm before going live
+          "So it was shaped around what an integrating team would need, not around the shape of our own screens - the same contract-first thinking that keeps a component library stable when the products using it change.",
         ],
       },
     ],
@@ -317,6 +316,10 @@ export const practice = {
       title: "Contribution over gatekeeping",
       body: "A system nobody can add to gets routed around. There is a path in for a product engineer with a real need: propose, review against existing tokens, document, ship. The review asks whether the case is already covered, not whether the requester is senior enough.",
     },
+    {
+      title: "AI inside the same rules",
+      body: "AI assistants work in the design repository under the same constraints as people. Per-directory rules and agent configuration live next to the code they govern, so a change to the token layer meets the same review whoever, or whatever, made it. What I want from AI is not speed. It is consistency that does not depend on who is typing.",
+    },
   ],
 };
 
@@ -332,6 +335,7 @@ export const leading = {
     "Led a three-person frontend team through a seven-day re-theme sprint, and ran the retrospective.",
     "Wrote the onboarding documentation, with separate tracks for general staff and for developers.",
     "Introduced branch protection and mandatory reviewer approval on the design repository.",
+    "Introduced structured AI-assisted workflows on the design repository, with per-directory rules and agent configuration.",
   ],
 };
 
@@ -411,7 +415,7 @@ export const skills = [
   { group: "Mobile", items: "React Native" },
   { group: "Backend", items: "Node.js, GraphQL and Apollo, REST APIs, SQL, NoSQL" },
   { group: "Cloud", items: "AWS, Azure" },
-  { group: "Practice", items: "Git, CI/CD, code review governance, technical documentation, mentoring" },
+  { group: "Practice", items: "Git, CI/CD, code review governance, AI workflow governance, technical documentation, mentoring" },
 ];
 
 export const certifications = [

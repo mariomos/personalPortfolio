@@ -169,6 +169,8 @@
   }
 
   .practice__item { padding-top: var(--space-4); border-top: var(--hairline) solid var(--c-line); }
+  /* An odd last principle takes the full row rather than sitting alone. */
+  .practice__item:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .practice__title { font-size: var(--size-3); margin-bottom: var(--space-2); }
   .practice__body { color: var(--c-text-muted); max-width: var(--measure); }
 
