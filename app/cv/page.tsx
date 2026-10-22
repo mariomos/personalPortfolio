@@ -120,7 +120,6 @@ export default function CV() {
                   {cert.name}{" "}
                   <span className="cert-list__issuer">
                     {cert.issuer}
-                    {cert.year ? ` ${cert.year}` : ""}
                   </span>
                 </li>
               ))}

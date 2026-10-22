@@ -363,16 +363,16 @@ export const skills = [
 ];
 
 export const certifications = [
-  { name: "Frontend Developer", issuer: "Meta", year: "2023" },
-  { name: "UX Design", issuer: "Google", year: "2023" },
-  { name: "Solutions Architect Associate", issuer: "AWS", year: "2022" },
-  { name: "Developer Associate", issuer: "AWS", year: "2022" },
+  { name: "Frontend Developer", issuer: "Meta" },
+  { name: "UX Design", issuer: "Google" },
+  { name: "Solutions Architect Associate", issuer: "AWS" },
+  { name: "Developer Associate", issuer: "AWS" },
   { name: "Cloud Practitioner", issuer: "AWS" },
   { name: "Azure Fundamentals", issuer: "Microsoft" },
   { name: "Azure AI Fundamentals", issuer: "Microsoft" },
   { name: "Azure Data Fundamentals", issuer: "Microsoft" },
-  { name: "Microsoft 365 Fundamentals", issuer: "Microsoft", year: "2026" },
-  { name: "Security and Compliance", issuer: "Microsoft", year: "2025" },
+  { name: "Microsoft 365 Fundamentals", issuer: "Microsoft" },
+  { name: "Security and Compliance", issuer: "Microsoft" },
 ];
 
 export const languages = "English (native). Greek (proficient). Afrikaans (proficient).";
