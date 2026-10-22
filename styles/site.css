@@ -43,8 +43,9 @@
     transition: color var(--duration-fast) var(--ease-standard),
                 border-color var(--duration-fast) var(--ease-standard);
   }
-  .site-nav a:hover,
-  .site-nav a[aria-current="page"] {
+  /* Hover only lifts the text; the underline is reserved for "you are here". */
+  .site-nav a:hover { color: var(--c-text); }
+  .site-nav a[aria-current] {
     color: var(--c-text);
     border-bottom-color: var(--c-accent);
   }

@@ -315,7 +315,7 @@ export const experience: readonly Role[] = [
       "Appointed Frontend Ambassador with formal KPIs across knowledge sharing and mentoring.",
       "Built onboarding documentation with separate tracks for general staff and developers.",
     ],
-    stack: "Angular, Spartan, React, TypeScript, Untitled UI, Storybook, Tailwind, Figma, GitHub Actions",
+    stack: "Angular, Spartan, React, React Native, TypeScript, Untitled UI, Storybook, Tailwind, Figma, GitHub Actions",
   },
   {
     role: "Frontend developer",
@@ -327,6 +327,7 @@ export const experience: readonly Role[] = [
       "Reduced page load times by 32% through caching and minification.",
       "Implemented a GraphQL and Apollo data-fetching layer.",
     ],
+    stack: "React Native, GraphQL, Apollo",
   },
   {
     role: "Full stack developer",
@@ -351,7 +352,7 @@ export const experience: readonly Role[] = [
 ];
 
 export const skills = [
-  { group: "Core", items: "TypeScript, React, Angular, Next.js, Tailwind CSS" },
+  { group: "Core", items: "TypeScript, React, React Native, Angular, Next.js, Tailwind CSS" },
   {
     group: "Design systems",
     items:
@@ -421,7 +422,7 @@ export const colophon = {
 
 export const about = {
   paragraphs: [
-    "Football was the plan until an injury ended it. University was never an option, so I taught myself to build for the web around a job that paid the bills, and then kept going. Twelve years later that is still the shape of how I work: find the part I do not understand yet, and stay with it until I do.",
+    "Football was the plan until an injury ended it, so I brought the same discipline to the web. I am self-taught - I learned the craft alongside a day job, then turned it into a career. Twelve years later the method has not changed: find the part I do not understand yet, and stay with it until I own it.",
     "What held my attention was never making something appear on a screen. It was the layer underneath - why two buttons that should be identical are not, and what it takes to make that impossible rather than merely unlikely. That question turned into a career.",
     "The work I am proudest of is mostly invisible. It is the token that stopped a colour drifting across five products, the checklist that stopped a component shipping half-migrated, the one-page document that settled an argument before it started. A design system is an agreement, and someone has to keep it.",
     "Greek and South African, based in Cape Town, working remotely for a Cyprus-based company across five products and two frameworks.",
