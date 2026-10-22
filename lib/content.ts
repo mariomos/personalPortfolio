@@ -420,12 +420,17 @@ export const colophon = {
 
 /* ----------------------------------------------------------------- about -- */
 
+/**
+ * The first paragraph doubles as the CV's background section, so it has to
+ * stand on its own.
+ */
 export const about = {
   paragraphs: [
-    "Football was the plan until an injury ended it, so I brought the same discipline to the web. I am self-taught - I learned the craft alongside a day job, then turned it into a career. Twelve years later the method has not changed: find the part I do not understand yet, and stay with it until I own it.",
-    "What held my attention was never making something appear on a screen. It was the layer underneath - why two buttons that should be identical are not, and what it takes to make that impossible rather than merely unlikely. That question turned into a career.",
+    "Football was the plan until an injury ended it, so I brought the same discipline to the web. I am self-taught, and twelve years in, the habit that taught me the craft is the one I lead with: go straight to the part of a system nobody fully understands, make it legible, and leave it in a state the whole team can own.",
+    "What held my attention was never making something appear on a screen. It was the layer underneath - why two buttons that should be identical are not, and what it takes to make that impossible rather than merely unlikely. That question turned into the work I do now.",
+    "At Exelia Technologies I lead that layer for a whole product suite: one token source and component library bridging a React design repository and an Angular production stack, and the 18-artifact operating model and review governance that keep the two from drifting. As the company's Frontend Ambassador I mentor the people who build on it, because a system only holds when everyone using it understands why it exists.",
     "The work I am proudest of is mostly invisible. It is the token that stopped a colour drifting across five products, the checklist that stopped a component shipping half-migrated, the one-page document that settled an argument before it started. A design system is an agreement, and someone has to keep it.",
-    "Greek and South African, based in Cape Town, working remotely for a Cyprus-based company across five products and two frameworks.",
+    "Greek and South African, based in Cape Town, and an EU citizen. I already work remotely with a team in Cyprus, so European hours and distributed collaboration are part of every week.",
   ],
 };
 
