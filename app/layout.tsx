@@ -1,42 +1,53 @@
-import Header from '@/components/header'
-import './globals.css'
-import { Inter } from 'next/font/google'
-import ActiveSectionContextProvider from '@/context/active-section-context'
-import { Toaster } from 'react-hot-toast'
-import Footer from '@/components/footer'
-import ThemeSwitch from '@/components/theme-switch'
-import ThemeContextProvider from '@/context/theme-context'
+import type { Metadata } from "next";
+import "./globals.css";
+import { fontClassNames } from "@/lib/fonts";
+import { site } from "@/lib/content";
+import { BootScript } from "@/components/boot-script";
+import { GridOverlay } from "@/components/annotation";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
-const inter = Inter({ subsets: ['latin'] })
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: {
+    default: site.title,
+    template: `%s - ${site.name}`,
+  },
+  description: site.description,
+  authors: [{ name: site.name, url: site.url }],
+  openGraph: {
+    type: "website",
+    url: site.url,
+    title: site.title,
+    description: site.description,
+    siteName: site.name,
+    locale: "en_ZA",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+  },
+  robots: { index: true, follow: true },
+};
 
-export const metadata = {
-  title: 'Mario Moshogiannis | Personal Portfolio',
-  description: 'Explore a showcase of my work as a Frontend Developer. Discover web projects, UI/UX designs, and more. Join me on a journey through code and creativity.',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className='!scroll-smooth'> 
-      <body className={`{inter.className} dark:bg-gray-900 dark:text-gray-50 dark:text-opacity-90 bg-gray-50 text-gray-950 relative pt-4 lg:pt-28  lg:pb-2 pb-14`}>
-        <div className='dark:bg-[#946263] bg-[#fbe2e3] absolute -z-10 top-[-6rem] right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
-        <div className='dark:bg-[#676394] bg-[#dbd7fb] absolute -z-10 top-[-1rem] left-[-35rem] h-[50rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]'></div>
-        
-        <ThemeContextProvider>
-          <ActiveSectionContextProvider>
-            <Header/>
-            {children}
-            <Footer />
-            <Toaster position='top-right' />
-          </ActiveSectionContextProvider>
-
-          <ThemeSwitch />
-        </ThemeContextProvider>
-        
-        </body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <BootScript />
+        <meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#101A2B" media="(prefers-color-scheme: dark)" />
+      </head>
+      <body className={fontClassNames}>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <GridOverlay />
+        <SiteHeader />
+        <main id="main">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
-  )
+  );
 }

@@ -1,0 +1,250 @@
+@layer demo {
+  /* The theme-swap figure. Everything inside .demo__stage reads the custom
+     properties set on that element and nothing else - which is the point
+     being demonstrated, so it is worth keeping literally true here. The two
+     .demo-ui__exception rules are the deliberate violations. */
+
+  .demo { margin: var(--space-8) 0 0; }
+
+  .demo__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--hairline) solid var(--c-line);
+  }
+
+  .demo__themes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .demo__controls-label { color: var(--c-measure-text); margin-right: var(--space-2); }
+
+  .demo__body {
+    display: grid;
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+  }
+  @media (min-width: 900px) {
+    .demo__body { grid-template-columns: minmax(0, 1fr) minmax(0, 15rem); gap: var(--space-8); }
+  }
+
+  /* --------------------------------------------------------- the stage -- */
+
+  .demo__stage {
+    background: var(--demo-bg);
+    border: var(--hairline) solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-6);
+    min-width: 0;
+    transition: background-color var(--duration-medium) var(--ease-standard);
+  }
+
+  .demo-ui {
+    font-family: var(--font-body), system-ui, sans-serif;
+    color: var(--demo-text);
+    transition: color var(--duration-medium) var(--ease-standard);
+  }
+
+  .demo-ui__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--demo-line);
+    transition: border-color var(--duration-medium) var(--ease-standard);
+  }
+  .demo-ui__spacer { flex: 1; }
+
+  .demo-ui__mark {
+    width: 14px;
+    height: 14px;
+    background: var(--demo-accent);
+    border-radius: var(--demo-radius);
+    transition: background-color var(--duration-medium) var(--ease-standard),
+                border-radius var(--duration-medium) var(--ease-standard);
+  }
+
+  .demo-ui__brand { font-size: var(--size-1); font-weight: 600; }
+
+  .demo-ui__pill {
+    font-size: var(--size-0);
+    padding: 2px var(--space-2);
+    border-radius: var(--demo-radius);
+    background: var(--demo-accent);
+    color: var(--demo-on-accent);
+  }
+
+  .demo-ui__content { padding-top: var(--space-4); }
+
+  .demo-ui__eyebrow {
+    font-size: var(--size-0);
+    color: var(--demo-muted);
+    margin-bottom: var(--space-1);
+  }
+  .demo-ui__title { font-size: var(--size-3); font-weight: 600; font-family: inherit; }
+  .demo-ui__body {
+    font-size: var(--size-1);
+    color: var(--demo-muted);
+    margin-top: var(--space-1);
+  }
+
+  .demo-ui__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .demo-ui__card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-3);
+    background: var(--demo-surface);
+    border: 1px solid var(--demo-line);
+    border-radius: var(--demo-radius);
+    transition: background-color var(--duration-medium) var(--ease-standard),
+                border-color var(--duration-medium) var(--ease-standard),
+                border-radius var(--duration-medium) var(--ease-standard);
+  }
+  .demo-ui__stat { font-size: var(--size-3); font-weight: 600; }
+  .demo-ui__label { font-size: var(--size-0); color: var(--demo-muted); }
+
+  .demo-ui__field { margin-top: var(--space-4); }
+  .demo-ui__input {
+    display: block;
+    margin-top: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--size-1);
+    background: var(--demo-surface);
+    border: 1px solid var(--demo-line);
+    border-radius: var(--demo-radius);
+    transition: background-color var(--duration-medium) var(--ease-standard),
+                border-color var(--duration-medium) var(--ease-standard),
+                border-radius var(--duration-medium) var(--ease-standard);
+  }
+
+  .demo-ui__actions { display: flex; gap: var(--space-2); margin-top: var(--space-4); }
+  .demo-ui__btn {
+    font-size: var(--size-1);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--demo-line);
+    border-radius: var(--demo-radius);
+    color: var(--demo-text);
+    transition: background-color var(--duration-medium) var(--ease-standard),
+                border-color var(--duration-medium) var(--ease-standard),
+                border-radius var(--duration-medium) var(--ease-standard),
+                color var(--duration-medium) var(--ease-standard);
+  }
+  .demo-ui__btn--primary {
+    background: var(--demo-accent);
+    border-color: var(--demo-accent);
+    color: var(--demo-on-accent);
+  }
+
+  /* ------------------------------------------------------- exceptions -- */
+  /* Hard-coded on purpose. These are the pages that need hand work. */
+
+  .demo-ui__pill.demo-ui__exception {
+    background: #2F5BEA;
+    color: #FFFFFF;
+    border-radius: 2px;
+  }
+  .demo-ui__card.demo-ui__exception {
+    background: #F4F5F7;
+    border-color: #DDE1E7;
+    border-radius: 2px;
+  }
+  .demo-ui__card.demo-ui__exception .demo-ui__stat { color: #1A1F2B; }
+  .demo-ui__card.demo-ui__exception .demo-ui__label { color: #5C6675; }
+
+  /* Marked, not merely coloured: the outline and the printed label both
+     carry the meaning, so it does not depend on seeing magenta. */
+  .demo__stage[data-exceptions="on"] .demo-ui__exception {
+    position: relative;
+    outline: var(--mark-weight) dashed var(--c-accent);
+    outline-offset: 3px;
+  }
+  .demo__stage[data-exceptions="on"] .demo-ui__exception::after {
+    content: attr(data-exception);
+    position: absolute;
+    left: 0;
+    top: calc(100% + 7px);
+    max-width: 70vw;
+    z-index: 1;
+    white-space: nowrap;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    line-height: 1;
+    padding: 3px 5px;
+    color: var(--paper);
+    background: var(--c-accent-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  /* The pill sits at the right edge, so its label is anchored right or it
+     runs off the stage on a phone. */
+  .demo__stage[data-exceptions="on"] .demo-ui__pill.demo-ui__exception::after {
+    left: auto;
+    right: 0;
+  }
+
+  /* Labels are overlays, so they need somewhere to land rather than sitting
+     on top of the next row. */
+  .demo__stage[data-exceptions="on"] .demo-ui__cards { margin-bottom: var(--space-6); }
+  .demo__stage[data-exceptions="on"] .demo-ui__bar { margin-bottom: var(--space-4); }
+
+  /* ------------------------------------------------------- the readout -- */
+
+  .demo__readout { min-width: 0; }
+  .demo__readout-title { color: var(--c-accent-text); margin-bottom: var(--space-3); }
+
+  .demo__tokens { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; }
+  .demo__tokens > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: var(--hairline) solid var(--c-line);
+  }
+  .demo__tokens dt { color: var(--c-text-muted); }
+  .demo__tokens dd {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--c-text);
+  }
+
+  .demo__swatch {
+    width: var(--space-4);
+    height: var(--space-4);
+    border-radius: 2px;
+    border: var(--hairline) solid var(--c-line-strong);
+    flex: none;
+  }
+
+  .demo__readout-note {
+    margin-top: var(--space-4);
+    font-size: var(--size-1);
+    line-height: 1.45;
+    color: var(--c-text-muted);
+  }
+
+  .demo__caption {
+    margin-top: var(--space-4);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    color: var(--c-text-muted);
+  }
+
+  @media (max-width: 599px) {
+    .demo-ui__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}

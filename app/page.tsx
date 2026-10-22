@@ -1,21 +1,21 @@
-import About from "@/components/about";
-import Contact from "@/components/contact";
-import Experience from "@/components/experience";
-import Intro from "@/components/intro";
-import Projects from "@/components/projects";
-import SectionDivider from "@/components/section-divider";
-import Skills from "@/components/skills";
+import { Hero } from "@/components/sections/hero";
+import { WorkIndex } from "@/components/sections/work-index";
+import { LibraryTeaser } from "@/components/sections/library-teaser";
+import { Practice } from "@/components/sections/practice";
+import { Experience } from "@/components/sections/experience";
+import { About } from "@/components/sections/about";
+import { Contact } from "@/components/sections/contact";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center px-4">
-      <Intro />
-      <SectionDivider />
-      <About />
-      <Projects />
-      <Skills />
+    <>
+      <Hero />
+      <WorkIndex />
+      <LibraryTeaser />
+      <Practice />
       <Experience />
+      <About />
       <Contact />
-    </main>
-  )
+    </>
+  );
 }

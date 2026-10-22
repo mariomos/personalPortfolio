@@ -1,16 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Cascade order is declared once, here, before anything is imported.
+   Later layers win regardless of import order or selector specificity. */
+@layer tokens, base, layout, components, annotations, site, demo;
 
-
-html {
-    --line-color: #e5e7eb;
-  }
-  
-  html.dark {
-    --line-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  .borderBlack {
-    @apply border border-black/10;
-  }
+@import "./tokens.css";
+@import "../styles/base.css";
+@import "../styles/layout.css";
+@import "../styles/components.css";
+@import "../styles/annotations.css";
+@import "../styles/site.css";
+@import "../styles/demo.css";
