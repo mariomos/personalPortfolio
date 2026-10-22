@@ -55,7 +55,7 @@ export function LibraryTeaser() {
             <Button href="/components" variant="primary">
               Open the library
             </Button>
-            <Button href="/tokens.json" variant="quiet">
+            <Button href="/tokens" variant="quiet">
               <span className="mono">tokens.json</span>
             </Button>
           </div>

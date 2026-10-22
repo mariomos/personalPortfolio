@@ -148,7 +148,7 @@ export function ThemeSwapDemo() {
 
             <div className="demo-ui__content">
               <p className="demo-ui__eyebrow">Overview</p>
-              <h4 className="demo-ui__title">Deployment health</h4>
+              <p className="demo-ui__title">Deployment health</p>
               <p className="demo-ui__body">
                 All regions reporting. Last sync two minutes ago.
               </p>

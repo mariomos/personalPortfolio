@@ -33,7 +33,7 @@ export default function ComponentLibrary() {
           with it.
         </p>
         <div className="row" style={{ marginTop: "var(--space-8)" }}>
-          <Button href="/tokens.json" variant="secondary">
+          <Button href="/tokens" variant="secondary">
             <span className="mono">tokens.json</span>
           </Button>
           <Button href="/" variant="quiet">
@@ -58,7 +58,7 @@ export default function ComponentLibrary() {
           <table className="spec-table">
             <thead>
               <tr>
-                <th scope="col" />
+                <th scope="col">swatch</th>
                 <th scope="col">token</th>
                 <th scope="col">value</th>
                 <th scope="col">role</th>
@@ -98,6 +98,8 @@ export default function ComponentLibrary() {
                 <th scope="col">role</th>
                 <th scope="col" colSpan={2}>light</th>
                 <th scope="col" colSpan={2}>dark</th>
+                <th scope="col">use</th>
+                <th scope="col">contrast</th>
                 <th scope="col">origin</th>
               </tr>
             </thead>
@@ -117,15 +119,14 @@ export default function ComponentLibrary() {
                   <td data-muted>
                     {token.lightContrast === null ? (
                       // A surface is checked through whatever is drawn on it,
-                      // so a ratio of its own would be meaningless.
-                      <span style={{ opacity: 0.6 }}>n/a</span>
+                      // so a ratio of its own would be meaningless. The cell is
+                      // already muted - fading it further would fail contrast.
+                      "n/a"
                     ) : (
                       <>
                         {token.lightContrast} / {token.darkContrast}
                         <br />
-                        <span style={{ opacity: 0.7 }}>
-                          vs {token.contrastAgainst}, needs {token.required}
-                        </span>
+                        vs {token.contrastAgainst}, needs {token.required}
                       </>
                     )}
                   </td>
@@ -204,7 +205,7 @@ export default function ComponentLibrary() {
               <tr>
                 <th scope="col">token</th>
                 <th scope="col">value</th>
-                <th scope="col" style={{ width: "60%" }} />
+                <th scope="col" style={{ width: "60%" }}>scale</th>
               </tr>
             </thead>
             <tbody>
@@ -306,7 +307,7 @@ export default function ComponentLibrary() {
           <Specimen
             name="Field"
             summary="Label, control, hint and error as one unit. The control cannot be rendered without its label."
-            tokens={["--c-line-strong", "--c-accent", "--space-3", "--space-4", "--size-1", "--size-2"]}
+            tokens={["--c-line-strong", "--c-accent", "--space-3", "--space-4", "--size-1", "--size-2", "--radius-sm"]}
             notes={
               <p>
                 The error replaces the hint rather than stacking beneath it, and is wired through

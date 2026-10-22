@@ -14,9 +14,9 @@ export function SiteFooter() {
           <div className="site-footer__links">
             {/* The token source is linked, not described. Reading it is the
                 fastest way to know whether this site means what it says. */}
-            <a className="value link" href="/tokens.json">
+            <Link className="value link" href="/tokens">
               tokens.json <b>v{tokenVersion}</b>
-            </a>
+            </Link>
             <Link className="value link" href="/components">
               component library
             </Link>

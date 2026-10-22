@@ -51,7 +51,9 @@ export function Button(props: ButtonProps) {
 
   if (typeof rest.href === "string") {
     const { href, ...anchorRest } = rest as { href: string } & ComponentPropsWithoutRef<"a">;
-    const external = /^(https?:|mailto:)/.test(href) || href.endsWith(".pdf");
+    // Files (tokens.json, a PDF) are not routes: next/link would try to fetch
+    // them as a page and land on the 404.
+    const external = /^(https?:|mailto:)/.test(href) || /\.[a-z0-9]+$/i.test(href);
     if (external) {
       return (
         <a

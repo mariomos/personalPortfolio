@@ -20,7 +20,7 @@ export default function Colophon() {
           <Button href="/components" variant="secondary">
             Component library
           </Button>
-          <Button href="/tokens.json" variant="quiet">
+          <Button href="/tokens" variant="quiet">
             <span className="mono">tokens.json</span>
           </Button>
         </div>
