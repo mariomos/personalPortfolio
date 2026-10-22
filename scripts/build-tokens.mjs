@@ -54,10 +54,10 @@ const target = (name) => {
 };
 
 /**
- * Blend `base` toward `toward` in 1% steps until the pair clears `ratio`.
- * `against` is the other half of the pair; `role` says which side is being
- * adjusted - "fg" when the solved colour is the text, "bg" when the solved
- * colour is the fill behind fixed-colour text.
+ * Blend `base` toward `toward` in 1% steps until it clears `ratio` against
+ * every colour in `against`. `role` says which side is being adjusted - "fg"
+ * when the solved colour is the text, "bg" when the solved colour is the fill
+ * behind fixed-colour text.
  *
  * Returns the base untouched when it already passes, so a token only moves
  * as far as accessibility actually requires.
@@ -65,47 +65,75 @@ const target = (name) => {
 const solveContrast = (base, toward, against, ratio, role) => {
   for (let step = 0; step <= 100; step++) {
     const candidate = mix(base, toward, step / 100);
-    if (contrast(candidate, against) >= ratio) {
+    if (against.every((other) => contrast(candidate, other) >= ratio)) {
       return { value: candidate, amount: step / 100, role };
     }
   }
   throw new Error(
-    `Cannot reach ${ratio}:1 blending ${base} toward ${toward} against ${against}. ` +
+    `Cannot reach ${ratio}:1 blending ${base} toward ${toward} against ${against.join(", ")}. ` +
       `Adjust the primitives or the target in tokens.json.`
   );
 };
 
 const lookup = (path) => path.split(".").reduce((o, k) => o[k], src).value;
 
+/**
+ * A text role names every surface it is drawn on - a label on a tinted
+ * surface is not on the page background, and is checked where it really is.
+ * One name or a list; defaults to the page background.
+ */
+const surfacesOf = (entry) => {
+  const on = entry.solve?.[2] ?? "bg";
+  return Array.isArray(on) ? on : [on];
+};
+
+/* Roles resolve on demand, so a role can be solved against a surface declared
+   after it. A reference is a primitive path ("color.paper") or a role name in
+   the same scheme ("accent-quiet"). */
+const resolvedSemantic = { light: {}, dark: {} };
+const solveReport = [];
+const resolving = new Set();
+
+const resolveRef = (scheme, ref) => (ref.startsWith("color.") ? lookup(ref) : resolveRole(scheme, ref));
+
 /** Resolve a semantic entry ({ref} | {mix} | {solve} | {solveOn}) to a hex. */
-const resolveToken = (entry) => {
-  if (entry.ref) return { value: lookup(entry.ref) };
+const resolveToken = (scheme, entry) => {
+  const get = (ref) => resolveRef(scheme, ref);
+  if (entry.ref) return { value: get(entry.ref) };
   if (entry.mix) {
     const [a, b, amount] = entry.mix;
-    return { value: mix(lookup(a), lookup(b), amount) };
+    return { value: mix(get(a), get(b), amount) };
   }
   if (entry.solve) {
-    const [base, toward, against, name] = entry.solve;
-    return solveContrast(lookup(base), lookup(toward), lookup(against), target(name), "fg");
+    const [base, toward, , name] = entry.solve;
+    return solveContrast(get(base), get(toward), surfacesOf(entry).map(get), target(name), "fg");
   }
   if (entry.solveOn) {
     const [base, toward, fg, name] = entry.solveOn;
-    return solveContrast(lookup(base), lookup(toward), lookup(fg), target(name), "bg");
+    return solveContrast(get(base), get(toward), [get(fg)], target(name), "bg");
   }
   throw new Error("Unresolvable token: " + JSON.stringify(entry));
 };
 
-const resolvedSemantic = {};
-const solveReport = [];
+function resolveRole(scheme, name) {
+  if (name in resolvedSemantic[scheme]) return resolvedSemantic[scheme][name];
+  const entry = src.semantic[scheme][name];
+  if (!entry) throw new Error(`Unknown role "${name}" in the ${scheme} scheme`);
+  const key = `${scheme}/${name}`;
+  if (resolving.has(key)) throw new Error(`Circular token reference through ${key}`);
+  resolving.add(key);
+  const out = resolveToken(scheme, entry);
+  resolving.delete(key);
+  resolvedSemantic[scheme][name] = out.value;
+  if (out.amount !== undefined) {
+    solveReport.push({ scheme, name, ...out, base: resolveRef(scheme, entry.solve?.[0] ?? entry.solveOn[0]) });
+  }
+  return out.value;
+}
+
 for (const scheme of ["light", "dark"]) {
-  resolvedSemantic[scheme] = {};
-  for (const [name, entry] of Object.entries(src.semantic[scheme])) {
-    if (name.startsWith("$")) continue;
-    const out = resolveToken(entry);
-    resolvedSemantic[scheme][name] = out.value;
-    if (out.amount !== undefined) {
-      solveReport.push({ scheme, name, ...out, base: lookup(entry.solve?.[0] ?? entry.solveOn[0]) });
-    }
+  for (const name of Object.keys(src.semantic[scheme])) {
+    if (!name.startsWith("$")) resolveRole(scheme, name);
   }
 }
 
@@ -213,7 +241,7 @@ const describeOrigin = (entry) => {
     return { origin: `mix(${short(entry.mix[0])}, ${short(entry.mix[1])}, ${entry.mix[2]})`, kind: "mix" };
   if (entry.solve)
     return {
-      origin: `solve(${short(entry.solve[0])} -> ${short(entry.solve[1])}, ${entry.solve[3]} on ${short(entry.solve[2])})`,
+      origin: `solve(${short(entry.solve[0])} -> ${short(entry.solve[1])}, ${entry.solve[3]} on ${surfacesOf(entry).map(short).join(" + ")})`,
       kind: "solved",
     };
   return {
@@ -224,7 +252,6 @@ const describeOrigin = (entry) => {
 
 const semanticDistribution = Object.fromEntries(
   ["light", "dark"].map((scheme) => {
-    const bg = resolvedSemantic[scheme].bg;
     return [
       scheme,
       Object.fromEntries(
@@ -232,21 +259,23 @@ const semanticDistribution = Object.fromEntries(
           .filter(([name]) => !name.startsWith("$"))
           .map(([name, entry]) => {
           const value = resolvedSemantic[scheme][name];
-          // Text roles are measured against the page background. A fill
-          // declared with `solveOn` names the foreground it must carry, so
-          // it is measured against that same colour - not against whatever
-          // the scheme's inverse happens to be.
+          // Text roles are measured against every surface they declare (the
+          // page background by default). A fill declared with `solveOn`
+          // names the foreground it must carry, so it is measured against
+          // that same colour - not against whatever the scheme's inverse
+          // happens to be.
           const use = src.semantic.$use[name];
-          const fillFg = entry.solveOn ? entry.solveOn[2] : null;
+          const partners = entry.solveOn ? [entry.solveOn[2]] : surfacesOf(entry);
 
           // A surface is never measured on its own - it is checked through
-          // whatever is drawn on top of it. Everything else has a partner.
-          const partner =
-            use === "surface" || use === "inverse"
-              ? null
-              : fillFg
-              ? lookup(fillFg)
-              : bg;
+          // whatever is drawn on top of it. Everything else is reported at
+          // its worst pairing, which is the one that has to pass.
+          const unmeasured = use === "surface" || use === "inverse";
+          const worst = unmeasured
+            ? null
+            : partners
+                .map((ref) => ({ ref, ratio: contrast(value, resolveRef(scheme, ref)) }))
+                .sort((a, b) => a.ratio - b.ratio)[0];
 
           return [
             name,
@@ -254,9 +283,9 @@ const semanticDistribution = Object.fromEntries(
               value,
               use,
               ...describeOrigin(entry),
-              contrast: partner ? Number(contrast(value, partner).toFixed(2)) : null,
-              contrastAgainst: partner ? (fillFg ? String(fillFg).replace("color.", "") : "bg") : null,
-              required: partner ? (use === "text" || use === "fill" ? src.$a11y.text : src.$a11y["non-text"]) : null,
+              contrast: worst ? Number(worst.ratio.toFixed(2)) : null,
+              contrastAgainst: worst ? worst.ref.replace("color.", "") : null,
+              required: worst ? (use === "text" || use === "fill" ? src.$a11y.text : src.$a11y["non-text"]) : null,
             },
           ];
         })
