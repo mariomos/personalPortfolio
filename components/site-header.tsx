@@ -19,10 +19,7 @@ function useActiveSection(enabled: boolean) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!enabled) {
-      setActive(null);
-      return;
-    }
+    if (!enabled) return;
 
     const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
     let frame = 0;
@@ -47,7 +44,7 @@ function useActiveSection(enabled: boolean) {
       if (!frame) frame = requestAnimationFrame(update);
     };
 
-    update();
+    schedule();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => {
@@ -57,7 +54,7 @@ function useActiveSection(enabled: boolean) {
     };
   }, [enabled]);
 
-  return active;
+  return enabled ? active : null;
 }
 
 /**

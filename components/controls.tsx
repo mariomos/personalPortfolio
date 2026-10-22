@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Switch } from "@/components/ui/switch";
 
 type Attr = "data-theme" | "data-anno" | "data-grid";
@@ -20,51 +20,56 @@ const write = (attr: Attr, value: string | null, key: string) => {
   }
 };
 
+/* The <html> attributes are the source of truth - the boot script sets them
+   before paint and the CSS reads them - so the switches subscribe to them
+   rather than keeping a copy that could drift. */
+const subscribeAttrs = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-anno", "data-grid"],
+  });
+  return () => observer.disconnect();
+};
+const useAttr = (attr: Attr) => useSyncExternalStore(subscribeAttrs, () => read(attr), () => null);
+
+const darkQuery = "(prefers-color-scheme: dark)";
+const subscribeScheme = (onChange: () => void) => {
+  const query = window.matchMedia(darkQuery);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+};
+/** Null on the server and during hydration, when the system scheme is unknown. */
+const useSystemDark = () =>
+  useSyncExternalStore(subscribeScheme, () => window.matchMedia(darkQuery).matches, () => null);
+
 /**
  * The inspect controls. Turning the annotation layer off is a first-class
  * option: the layer is the argument, but the visitor decides how loud it is.
  */
 export function Controls() {
-  const [mounted, setMounted] = useState(false);
-  const [dark, setDark] = useState(false);
-  const [anno, setAnno] = useState(true);
-  const [gridOn, setGridOn] = useState(false);
+  const theme = useAttr("data-theme");
+  const systemDark = useSystemDark();
+  const anno = useAttr("data-anno") !== "off";
+  const gridOn = useAttr("data-grid") === "on";
+  const mounted = systemDark !== null;
+  const dark = theme ? theme === "dark" : Boolean(systemDark);
 
-  useEffect(() => {
-    const explicit = read("data-theme");
-    setDark(
-      explicit ? explicit === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches
-    );
-    setAnno(read("data-anno") !== "off");
-    setGridOn(read("data-grid") === "on");
-    setMounted(true);
-  }, []);
-
-  const toggleTheme = () => {
-    const next = !dark;
-    setDark(next);
-    write("data-theme", next ? "dark" : "light", "mm-theme");
-  };
+  const toggleTheme = () => write("data-theme", dark ? "light" : "dark", "mm-theme");
 
   return (
     <div className="toolbar">
       <div className="toolbar__switches">
         <Switch
           checked={gridOn}
-          onChange={(next) => {
-            setGridOn(next);
-            write("data-grid", next ? "on" : null, "mm-grid");
-          }}
+          onChange={(next) => write("data-grid", next ? "on" : null, "mm-grid")}
           title="Show the 12-column grid"
         >
           <span className="mono">grid</span>
         </Switch>
         <Switch
           checked={anno}
-          onChange={(next) => {
-            setAnno(next);
-            write("data-anno", next ? null : "off", "mm-anno");
-          }}
+          onChange={(next) => write("data-anno", next ? null : "off", "mm-anno")}
           title="Show measurement annotations"
         >
           <span className="mono">annotations</span>

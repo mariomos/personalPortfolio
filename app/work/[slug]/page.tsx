@@ -10,7 +10,8 @@ import { RegMarks } from "@/components/annotation";
 import { PipelineDiagram } from "@/components/diagram/pipeline";
 import { ThemeSwapDemo } from "@/components/demo/theme-swap";
 
-type Params = { params: { slug: string } };
+/** Next 15+ hands dynamic params over as a promise. */
+type Params = { params: Promise<{ slug: string }> };
 
 /** Figures a case-study section can pull in by key. */
 const figures = {
@@ -22,14 +23,16 @@ export function generateStaticParams() {
   return work.map((item) => ({ slug: item.slug }));
 }
 
-export function generateMetadata({ params }: Params): Metadata {
-  const study = work.find((item) => item.slug === params.slug);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { slug } = await params;
+  const study = work.find((item) => item.slug === slug);
   if (!study) return {};
   return { title: study.title, description: study.summary };
 }
 
-export default function CaseStudy({ params }: Params) {
-  const study = work.find((item) => item.slug === params.slug);
+export default async function CaseStudy({ params }: Params) {
+  const { slug } = await params;
+  const study = work.find((item) => item.slug === slug);
   if (!study) notFound();
 
   const next = work[(work.findIndex((i) => i.slug === study.slug) + 1) % work.length];
