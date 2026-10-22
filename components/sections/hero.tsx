@@ -29,6 +29,7 @@ export function Hero() {
               <span>
                 Leading frontend and design systems across five products at {site.company}.
               </span>
+              <span>{hero.range}</span>
             </p>
 
             {/* Citizenship and location are the first thing a hiring manager

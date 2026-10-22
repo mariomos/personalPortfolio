@@ -18,7 +18,7 @@ export const isTodo = (v: unknown): v is Todo =>
 export const site = {
   name: "Mario Moshogiannis",
   shortName: "Mario Moshogiannis",
-  role: "Frontend engineer. Design systems.",
+  role: "Senior frontend engineer. Design systems lead.",
   company: "Exelia Technologies",
   location: "Cape Town",
   /** The thing a hiring manager outside South Africa needs first. */
@@ -29,15 +29,17 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/mario-moshogiannis",
   cv: "/cv",
   url: "https://mariomos.com",
-  title: "Mario Moshogiannis - Frontend engineer, design systems",
+  title: "Mario Moshogiannis - Senior frontend engineer and design systems lead",
   description:
-    "I build the token pipelines, component libraries and governance that keep design and code in sync - currently across five products at Exelia Technologies. Frontend and design systems lead, based in Cape Town.",
+    "I build the token pipelines, component libraries and governance that keep design and code in sync - currently across five products at Exelia Technologies. Senior frontend engineer working across React, Angular, React Native and Node, based in Cape Town.",
 } as const;
 
 export const hero = {
   statement: "I build the systems that keep design and code in sync.",
   supporting:
     "Design tokens, component libraries, handoff and governance - the layer between a Figma file and production code.",
+  /** Range under the speciality, so a general frontend or full-stack reader sees it too. */
+  range: "Hands-on across React, Angular, React Native, Node and GraphQL.",
 };
 
 /**
@@ -351,14 +353,16 @@ export const experience: readonly Role[] = [
 ];
 
 export const skills = [
-  { group: "Core", items: "TypeScript, React, React Native, Angular, Next.js, Tailwind CSS" },
+  { group: "Frontend", items: "TypeScript, React, Next.js, Angular, Vue, Tailwind CSS" },
   {
     group: "Design systems",
     items:
       "Design tokens, component libraries, Storybook, Untitled UI, Spartan, Figma, design-to-code handoff",
   },
+  { group: "Mobile", items: "React Native" },
+  { group: "Backend", items: "Node.js, GraphQL and Apollo, REST APIs, SQL, NoSQL" },
+  { group: "Cloud", items: "AWS, Azure" },
   { group: "Practice", items: "Git, CI/CD, code review governance, technical documentation, mentoring" },
-  { group: "Also", items: "Node.js, Vue, GraphQL, SQL, AWS, Azure" },
 ];
 
 export const certifications = [
