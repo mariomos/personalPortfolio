@@ -5,7 +5,7 @@ import { Placeholder } from "@/components/placeholder";
 /**
  * Links, not a form. The site is a static export, so a form would need a
  * third party to be honest about working - and the brief's first option was
- * no form at all. actions/sendEmail.ts is still in the repo if that changes.
+ * no form at all.
  */
 export function Contact() {
   return (

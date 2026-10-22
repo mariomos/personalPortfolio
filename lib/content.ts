@@ -27,7 +27,6 @@ export const site = {
   phone: "+27 81 882 3111",
   phoneHref: "tel:+27818823111",
   linkedin: "https://www.linkedin.com/in/mario-moshogiannis",
-  github: TODO("GitHub profile URL - not on the CV or anywhere in the repo"),
   cv: "/cv",
   url: "https://mariomos.com",
   title: "Mario Moshogiannis - Frontend engineer, design systems",
@@ -443,7 +442,6 @@ export const contact = {
     { label: "Email", value: site.email, href: `mailto:${site.email}` },
     { label: "Phone", value: site.phone, href: site.phoneHref },
     { label: "LinkedIn", value: "in/mario-moshogiannis", href: site.linkedin },
-    { label: "GitHub", value: site.github, href: site.github },
     { label: "CV", value: "Read it here", href: "/cv" },
   ],
 };
