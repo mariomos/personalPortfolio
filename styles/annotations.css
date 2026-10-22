@@ -1,0 +1,272 @@
+@layer annotations {
+  /* The annotation layer. Everything here is decoration that carries real
+     information: measurements are the actual spacing tokens, the grid
+     overlay is the actual grid, state labels are the actual states.
+     Nothing here invents a number.
+
+     Two switches, both on <html>:
+       data-anno="off"  - hides the layer entirely (the dialled-down mode)
+       data-grid="on"   - reveals the 12-column overlay
+     Below 900px the layer drops to its inline form: no margin marks,
+     only the specs and token values that still read at that width.     */
+
+  .anno { color: var(--c-measure-text); }
+
+  html[data-anno="off"] .anno,
+  html[data-anno="off"] .measure,
+  html[data-anno="off"] .regmark,
+  html[data-anno="off"] .spec__dim { display: none; }
+
+  /* ------------------------------------------------ 12-column overlay -- */
+
+  .anno-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-medium) var(--ease-standard);
+  }
+  html[data-grid="on"] .anno-grid { opacity: 1; }
+
+  .anno-grid__inner {
+    height: 100%;
+    width: 100%;
+    max-width: var(--grid-max-width);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+  }
+  @media (min-width: 900px) {
+    .anno-grid__inner { padding-inline: var(--space-8); }
+  }
+
+  .anno-grid__col {
+    height: 100%;
+    background: var(--c-measure-quiet);
+    border-inline: var(--hairline) solid color-mix(in srgb, var(--c-measure) 30%, transparent);
+  }
+  /* The two annotation margin columns read differently from content columns. */
+  .anno-grid__col[data-role="margin"] {
+    background: var(--c-accent-quiet);
+    border-inline-color: color-mix(in srgb, var(--c-accent) 30%, transparent);
+  }
+
+  /* ------------------------------------------------- measurement marks -- */
+
+  .measure {
+    --len: var(--space-16);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--c-measure-text);
+  }
+
+  .measure__line {
+    position: relative;
+    display: block;
+    background: currentColor;
+    flex: none;
+  }
+
+  /* End caps, drawn perpendicular to the line - the way an inspect panel
+     terminates a dimension. */
+  .measure__line::before,
+  .measure__line::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+
+  .measure--v { flex-direction: row; }
+  .measure--v .measure__line {
+    width: var(--hairline);
+    height: var(--len);
+    transform-origin: top center;
+  }
+  .measure--v .measure__line::before,
+  .measure--v .measure__line::after {
+    left: -3px;
+    width: 7px;
+    height: var(--hairline);
+  }
+  .measure--v .measure__line::before { top: 0; }
+  .measure--v .measure__line::after  { bottom: 0; }
+
+  .measure--h { flex-direction: column; align-items: flex-start; }
+  .measure--h .measure__line {
+    height: var(--hairline);
+    width: var(--len);
+    transform-origin: left center;
+  }
+  .measure--h .measure__line::before,
+  .measure--h .measure__line::after {
+    top: -3px;
+    height: 7px;
+    width: var(--hairline);
+  }
+  .measure--h .measure__line::before { left: 0; }
+  .measure--h .measure__line::after  { right: 0; }
+
+  .measure__label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    line-height: 1;
+    color: var(--c-measure-text);
+    white-space: nowrap;
+  }
+
+  .measure--redline { color: var(--c-accent); }
+  .measure--redline .measure__label { color: var(--c-accent-text); }
+
+  /* --------------------------------------------------- registration --- */
+
+  .regmark {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    color: var(--c-accent);
+    pointer-events: none;
+  }
+  .regmark::before,
+  .regmark::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+  .regmark::before { left: 50%; top: 0; width: var(--hairline); height: 100%; transform: translateX(-50%); }
+  .regmark::after  { top: 50%; left: 0; height: var(--hairline); width: 100%; transform: translateY(-50%); }
+
+  .regmark--tl { top: -5px; left: -5px; }
+  .regmark--tr { top: -5px; right: -5px; }
+
+  /* ---------------------------------------------------- section specs -- */
+
+  .spec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    line-height: 1.4;
+    color: var(--c-text-muted);
+  }
+  @media (min-width: 900px) {
+    .spec {
+      position: sticky;
+      top: var(--space-16);
+      padding-right: var(--space-4);
+    }
+  }
+
+  .spec__index {
+    color: var(--c-accent-text);
+    font-weight: 500;
+  }
+
+  .spec__name { color: var(--c-text); }
+
+  .spec__rule {
+    display: block;
+    height: var(--hairline);
+    width: var(--space-8);
+    background: var(--c-accent);
+  }
+
+  .spec__dim { color: var(--c-measure-text); }
+
+  /* Below the annotation breakpoint the spec turns into a single inline
+     line instead of a margin block - the information survives, the
+     geometry does not fight the content. */
+  @media (max-width: 899px) {
+    .spec {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-3);
+      border-bottom: var(--hairline) solid var(--c-line);
+    }
+    .spec__rule { width: var(--space-4); }
+  }
+
+  /* -------------------------------------------------- token callouts -- */
+
+  .callout {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    color: var(--c-text-muted);
+  }
+  .callout::before {
+    content: "";
+    width: var(--space-4);
+    height: var(--hairline);
+    background: var(--c-accent);
+    flex: none;
+  }
+  .callout b { color: var(--c-text); font-weight: 500; }
+
+  /* ------------------------------------------------------ state label -- */
+
+  .state-label {
+    display: inline-block;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    line-height: 1;
+    padding: var(--space-1) var(--space-2);
+    color: var(--c-measure-text);
+    border: var(--hairline) solid color-mix(in srgb, var(--c-measure-text) 40%, transparent);
+    border-radius: var(--radius-sm);
+    background: var(--c-measure-quiet);
+    white-space: nowrap;
+  }
+  .state-label[data-active="true"] {
+    color: var(--c-accent-text);
+    border-color: color-mix(in srgb, var(--c-accent) 45%, transparent);
+    background: var(--c-accent-quiet);
+  }
+
+  /* ------------------------------------------- the one load animation -- */
+  /* Marks draw themselves in, dimensions appear, then it settles. Two
+     seconds, once per session. Runs only when <html data-draw="run">,
+     which the boot script sets before paint - so with JS off, or on a
+     revisit, the layer is simply present.                              */
+
+  html[data-draw="run"] .measure__line { animation: draw-line var(--duration-medium) var(--ease-draw) backwards; }
+  html[data-draw="run"] .measure--v .measure__line { animation-name: draw-line-v; }
+  html[data-draw="run"] .measure--h .measure__line { animation-name: draw-line-h; }
+  html[data-draw="run"] .measure__label,
+  html[data-draw="run"] .callout,
+  html[data-draw="run"] .spec__dim { animation: fade-mark var(--duration-medium) var(--ease-standard) backwards; }
+  html[data-draw="run"] .regmark { animation: pop-mark var(--duration-fast) var(--ease-standard) backwards; }
+  html[data-draw="run"] .spec__rule { animation: draw-line-h var(--duration-medium) var(--ease-draw) backwards; }
+
+  html[data-draw="run"] .measure__line,
+  html[data-draw="run"] .spec__rule { animation-delay: calc(var(--i, 0) * 90ms); }
+  html[data-draw="run"] .regmark { animation-delay: calc(240ms + var(--i, 0) * 90ms); }
+  html[data-draw="run"] .measure__label,
+  html[data-draw="run"] .callout,
+  html[data-draw="run"] .spec__dim { animation-delay: calc(360ms + var(--i, 0) * 90ms); }
+
+  @keyframes draw-line-v { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes draw-line-h { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes draw-line   { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fade-mark   { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop-mark    { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+
+  /* Motion answers actions only. If the visitor asked for less, the layer
+     is static - it never animates, it is just correct. */
+  @media (prefers-reduced-motion: reduce) {
+    html[data-draw="run"] .measure__line,
+    html[data-draw="run"] .measure__label,
+    html[data-draw="run"] .callout,
+    html[data-draw="run"] .spec__dim,
+    html[data-draw="run"] .spec__rule,
+    html[data-draw="run"] .regmark { animation: none; }
+  }
+}

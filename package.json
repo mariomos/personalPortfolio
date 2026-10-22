@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "predev": "npm run tokens",
     "dev": "next dev",
+    "prebuild": "npm run tokens",
     "build": "next build",
-    "start": "next start",
+    "start": "npx serve out",
     "lint": "next lint"
   },
   "dependencies": {

@@ -1,0 +1,251 @@
+@layer components {
+  /* These are the site's primitives. The site is built from them and
+     /components documents them from the same source - there is no second
+     implementation kept in sync by hand. Every value resolves to a token. */
+
+  /* ------------------------------------------------------------ button -- */
+
+  .btn {
+    --btn-pad-y: var(--space-3);
+    --btn-pad-x: var(--space-6);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--btn-pad-y) var(--btn-pad-x);
+    font-size: var(--size-2);
+    font-weight: 500;
+    line-height: 1.2;
+    border: var(--hairline) solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard);
+  }
+
+  .btn[data-size="sm"] { --btn-pad-y: var(--space-2); --btn-pad-x: var(--space-4); font-size: var(--size-1); }
+  .btn[data-size="lg"] { --btn-pad-y: var(--space-4); --btn-pad-x: var(--space-8); font-size: var(--size-3); }
+
+  /* accent-strong is the redline solved against its own label colour, so a
+     filled button clears 4.5:1 in both schemes. See tokens.json $a11y. */
+  .btn[data-variant="primary"] {
+    background: var(--c-accent-strong);
+    color: var(--paper);
+    border-color: var(--c-accent-strong);
+  }
+  .btn[data-variant="primary"]:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--c-accent-strong) 86%, var(--ink));
+    border-color: color-mix(in srgb, var(--c-accent-strong) 86%, var(--ink));
+  }
+  .btn[data-variant="primary"]:active:not(:disabled) {
+    background: color-mix(in srgb, var(--c-accent-strong) 74%, var(--ink));
+  }
+
+  .btn[data-variant="secondary"] {
+    border-color: var(--c-line-strong);
+    color: var(--c-text);
+  }
+  .btn[data-variant="secondary"]:hover:not(:disabled) {
+    border-color: var(--c-accent);
+    color: var(--c-accent-text);
+  }
+  .btn[data-variant="secondary"]:active:not(:disabled) { background: var(--c-bg-raised); }
+
+  .btn[data-variant="quiet"] {
+    color: var(--c-text-muted);
+    padding-inline: var(--space-2);
+  }
+  .btn[data-variant="quiet"]:hover:not(:disabled) { color: var(--c-accent-text); }
+
+  .btn:disabled,
+  .btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+
+  .btn[data-loading="true"] { cursor: progress; }
+  .btn[data-loading="true"] .btn__spinner {
+    width: 12px; height: 12px;
+    border: var(--mark-weight) solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 700ms linear infinite;
+  }
+  @keyframes btn-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .btn[data-loading="true"] .btn__spinner { animation-duration: 2000ms; }
+  }
+
+  /* ------------------------------------------------------------- field -- */
+
+  .field { display: flex; flex-direction: column; gap: var(--space-2); }
+
+  .field__label {
+    font-size: var(--size-1);
+    font-weight: 500;
+    color: var(--c-text);
+  }
+
+  .field__hint { font-size: var(--size-1); color: var(--c-text-muted); }
+
+  .field__error { font-size: var(--size-1); color: var(--c-accent-text); }
+
+  .input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--size-2);
+    background: var(--c-bg);
+    color: var(--c-text);
+    border: var(--hairline) solid var(--c-line-strong);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+  .input::placeholder { color: var(--c-text-muted); }
+  .input:hover:not(:disabled) { border-color: var(--c-text-muted); }
+  .input:focus { border-color: var(--c-accent); }
+  .input:disabled { opacity: 0.45; cursor: not-allowed; background: var(--c-bg-sunken); }
+  .input[aria-invalid="true"] { border-color: var(--c-accent); }
+
+  textarea.input { min-height: calc(var(--space-24) + var(--space-4)); resize: vertical; }
+
+  /* ------------------------------------------------------------ switch -- */
+
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: var(--size-1);
+    color: var(--c-text);
+  }
+  .switch__track {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    flex: none;
+    border-radius: 9px;
+    border: var(--hairline) solid var(--c-line-strong);
+    background: var(--c-bg-sunken);
+    transition: background-color var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard);
+  }
+  .switch__thumb {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--c-text-muted);
+    transition: transform var(--duration-fast) var(--ease-standard),
+                background-color var(--duration-fast) var(--ease-standard);
+  }
+  .switch[aria-pressed="true"] .switch__track,
+  .switch[aria-checked="true"] .switch__track {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+  .switch[aria-pressed="true"] .switch__thumb,
+  .switch[aria-checked="true"] .switch__thumb {
+    transform: translateX(16px);
+    background: var(--paper);
+  }
+  .switch:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ------------------------------------------------------------- panel -- */
+  /* Square corners, one hairline, no shadow. Deliberately not a card. */
+
+  .panel {
+    border: var(--hairline) solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-bg-raised);
+    padding: var(--space-6);
+  }
+  .panel--flush { padding: 0; overflow: hidden; }
+
+  /* --------------------------------------------------------------- tag -- */
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    line-height: 1.3;
+    color: var(--c-text-muted);
+    border: var(--hairline) solid var(--c-line);
+    border-radius: var(--radius-sm);
+  }
+  .tag[data-tone="accent"] {
+    color: var(--c-accent-text);
+    border-color: color-mix(in srgb, var(--c-accent) 40%, transparent);
+    background: var(--c-accent-quiet);
+  }
+
+  /* -------------------------------------------------------- inline link -- */
+
+  .link {
+    color: var(--c-text);
+    text-decoration: none;
+    border-bottom: var(--hairline) solid var(--c-line-strong);
+    padding-bottom: 1px;
+    transition: color var(--duration-fast) var(--ease-standard),
+                border-color var(--duration-fast) var(--ease-standard);
+  }
+  .link:hover { color: var(--c-accent-text); border-bottom-color: var(--c-accent); }
+
+  /* --------------------------------------------------------- spec table -- */
+
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--size-0);
+    text-align: left;
+  }
+  .spec-table th {
+    font-weight: 500;
+    color: var(--c-text-muted);
+    padding: var(--space-2) var(--space-4) var(--space-2) 0;
+    white-space: nowrap;
+  }
+  /* Only the header row carries the heavier rule. A row header is a cell in
+     the body and takes the body's hairline. */
+  .spec-table thead th { border-bottom: var(--hairline) solid var(--c-line-strong); }
+  .spec-table tbody th[scope="row"] {
+    border-bottom: var(--hairline) solid var(--c-line);
+    color: var(--c-text);
+  }
+  .spec-table tbody tr:last-child th[scope="row"] { border-bottom: 0; }
+  .spec-table td {
+    padding: var(--space-2) var(--space-4) var(--space-2) 0;
+    border-bottom: var(--hairline) solid var(--c-line);
+    color: var(--c-text);
+    vertical-align: top;
+  }
+  .spec-table td[data-muted] { color: var(--c-text-muted); }
+  .spec-table tr:last-child td { border-bottom: 0; }
+
+  .swatch {
+    display: inline-block;
+    width: var(--space-6);
+    height: var(--space-6);
+    border-radius: var(--radius-sm);
+    border: var(--hairline) solid var(--c-line-strong);
+    vertical-align: middle;
+  }
+}
+
+@layer components {
+  /* A wide spec table scrolls inside its own container rather than pushing
+     the page sideways. Shrinking these columns to fit a phone would make
+     hex values and ratios unreadable, which defeats the point of showing
+     them at all. */
+  .table-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .table-scroll > .spec-table { min-width: 34rem; }
+}
