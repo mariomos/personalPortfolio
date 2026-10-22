@@ -258,7 +258,7 @@ export default function ComponentLibrary() {
           <Specimen
             name="Button"
             summary="Three variants, three sizes. Variant and size are data attributes, so a button's configuration is readable in the DOM inspector."
-            tokens={["--c-accent", "--c-line-strong", "--space-3", "--space-6", "--size-2", "--radius-sm"]}
+            tokens={["--c-accent", "--c-line-strong", "--space-3", "--space-6", "--size-2", "--radius-md"]}
             notes={
               <p>
                 Disabled buttons keep their text legible rather than fading to nothing, and are
@@ -307,7 +307,7 @@ export default function ComponentLibrary() {
           <Specimen
             name="Field"
             summary="Label, control, hint and error as one unit. The control cannot be rendered without its label."
-            tokens={["--c-line-strong", "--c-accent", "--space-3", "--space-4", "--size-1", "--size-2", "--radius-sm"]}
+            tokens={["--c-line-strong", "--c-accent", "--space-3", "--space-4", "--size-1", "--size-2", "--radius-md"]}
             notes={
               <p>
                 The error replaces the hint rather than stacking beneath it, and is wired through

@@ -17,7 +17,7 @@
     font-weight: 500;
     line-height: 1.2;
     border: var(--hairline) solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: transparent;
     cursor: pointer;
     text-decoration: none;
@@ -98,7 +98,7 @@
     background: var(--c-bg);
     color: var(--c-text);
     border: var(--hairline) solid var(--c-line-strong);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     transition: border-color var(--duration-fast) var(--ease-standard);
   }
   .input::placeholder { color: var(--c-text-muted); }
